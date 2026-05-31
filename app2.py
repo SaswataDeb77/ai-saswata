@@ -164,7 +164,10 @@ Reply naturally as Saswata.
 
         result = response.json()
 
-        reply = result["candidates"][0]["content"]["parts"][0]["text"]
+        if "candidates" in result:
+    reply = result["candidates"][0]["content"]["parts"][0]["text"]
+else:
+    reply = "API error: " + str(result)
 
         return jsonify({
             "reply": reply
