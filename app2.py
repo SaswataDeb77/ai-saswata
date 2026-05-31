@@ -155,23 +155,27 @@ Reply naturally as Saswata.
     }
 
     try:
+    response = requests.post(
+        url,
+        json=payload,
+        timeout=30
+    )
 
-        response = requests.post(
-            url,
-            json=payload,
-            timeout=30
-        )
+    result = response.json()
 
-        result = response.json()
+    if "candidates" in result:
+        reply = result["candidates"][0]["content"]["parts"][0]["text"]
+    else:
+        reply = "API error: " + str(result)
 
-        if "candidates" in result:
-    reply = result["candidates"][0]["content"]["parts"][0]["text"]
-else:
-    reply = "API error: " + str(result)
+    return jsonify({
+        "reply": reply
+    })
 
-        return jsonify({
-            "reply": reply
-        })
+except Exception as e:
+    return jsonify({
+        "reply": f"error 😭🙏🏻 {str(e)}"
+    })
 
     except Exception as e:
 
